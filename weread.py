@@ -206,7 +206,8 @@ def insert_to_notion(bookName, bookId, cover, sort, author,isbn,rating,category)
         "type": "database_id"
     }
     properties = {
-        "BookName": {"title": [{"type": "text", "text": {"content": bookName}}]},
+        "BookName": {"title": [{"type": "text", "text": {"content": bookName}}]}, 
+        "PROGRESS": {"title": [{"type": "text", "text": {"content": progress}}]}, 
         "BookId": {"rich_text": [{"type": "text", "text": {"content": bookId}}]},
         "ISBN": {"rich_text": [{"type": "text", "text": {"content": isbn}}]},
         "CATEGORY": {"rich_text": [{"type": "text", "text": {"content": category}}]},
@@ -413,6 +414,7 @@ if __name__ == "__main__":
             #     continue
             # book = book.get("book")
             title = book.get("title")
+            progress = book.get("progress")
             cover = book.get("cover")
             bookId = book.get("bookId")
             author = book.get("author")
@@ -426,7 +428,7 @@ if __name__ == "__main__":
             isbn,rating,category = get_bookinfo(bookId)
             children, grandchild = get_children(
                 chapter, summary, bookmark_list)
-            id = insert_to_notion(title, bookId, cover, sort, author,isbn,rating,category)
+            id = insert_to_notion(title, bookId, cover, sort, author,isbn,rating,category, progress)
             results = add_children(id, children)
             if(len(grandchild)>0 and results!=None):
                 add_grandchild(grandchild, results)
