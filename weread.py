@@ -404,7 +404,7 @@ if __name__ == "__main__":
     books = get_read_booklist()
     if (books != None):
         for book in books:
-            sort = book["sort"]
+            sort = book["startReadingTime"]
             if sort <= latest_sort:
                 continue
             # book = book.get("book")
