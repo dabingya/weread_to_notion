@@ -207,7 +207,7 @@ def insert_to_notion(bookName, bookId, cover, sort, author,isbn,rating,category,
     }
     properties = {
         "BookName": {"title": [{"type": "text", "text": {"content": bookName}}]}, 
-        "PROGRESS": {"title": [{"type": "number", "text": {"content": progress}}]}, 
+        "PROGRESS": {number: progress}, 
         "BookId": {"rich_text": [{"type": "text", "text": {"content": bookId}}]},
         "ISBN": {"rich_text": [{"type": "text", "text": {"content": isbn}}]},
         "CATEGORY": {"rich_text": [{"type": "text", "text": {"content": category}}]},
