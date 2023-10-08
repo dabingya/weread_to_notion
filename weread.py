@@ -65,7 +65,7 @@ def get_bookinfo(bookId):
         data = r.json()
         isbn = data["isbn"]
         newRating = data["newRating"]/1000
-        category = data['category']
+        category = data.get('category')
     return (isbn, newRating,category)
 
 
