@@ -13,6 +13,7 @@ from datetime import datetime
 import hashlib
 
 WEREAD_URL = "https://weread.qq.com/"
+WEREAD_READ_BOOKLIST = "https://i.weread.qq.com/mine/readbook?listType=3"
 WEREAD_NOTEBOOKS_URL = "https://i.weread.qq.com/user/notebooks"
 WEREAD_BOOKMARKLIST_URL = "https://i.weread.qq.com/book/bookmarklist"
 WEREAD_CHAPTER_INFO = "https://i.weread.qq.com/book/chapterInfos"
@@ -260,6 +261,18 @@ def add_grandchild(grandchild, results):
         client.blocks.children.append(block_id=id, children=[value])
 
 
+def get_read_booklist():
+    """获取所有读书"""
+    r = session.get(WEREAD_READ_BOOKLIST+"&count=20")
+    if r.ok:
+        data = r.json()
+        books = data.get("readBooks")
+        books.sort(key=lambda x: x["startReadingTime"])
+        return books
+    else:
+        print(r.text)
+    return None
+
 def get_notebooklist():
     """获取笔记本列表"""
     r = session.get(WEREAD_NOTEBOOKS_URL)
@@ -388,13 +401,13 @@ if __name__ == "__main__":
     )
     session.get(WEREAD_URL)
     latest_sort = get_sort()
-    books = get_notebooklist()
+    books = get_read_booklist()
     if (books != None):
         for book in books:
             sort = book["sort"]
             if sort <= latest_sort:
                 continue
-            book = book.get("book")
+            # book = book.get("book")
             title = book.get("title")
             cover = book.get("cover")
             bookId = book.get("bookId")
