@@ -75,7 +75,10 @@ def get_review_list(bookId):
     """获取笔记"""
     params = dict(bookId=bookId, listType=11, mine=1, syncKey=0)
     r = session.get(WEREAD_REVIEW_LIST_URL, params=params)
-    reviews = r.json().get("reviews")
+    if r.json().get("reviews"):
+        reviews = r.json().get("reviews")
+    else:
+        reviews = []
     summary = list(filter(lambda x: x.get("review").get("type") == 4, reviews))
     reviews = list(filter(lambda x: x.get("review").get("type") == 1, reviews))
     reviews = list(map(lambda x: x.get("review"), reviews))
