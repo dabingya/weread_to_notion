@@ -405,8 +405,8 @@ if __name__ == "__main__":
     if (books != None):
         for book in books:
             sort = book["startReadingTime"]
-            if sort <= latest_sort:
-                continue
+            # if sort <= latest_sort:
+            #     continue
             # book = book.get("book")
             title = book.get("title")
             cover = book.get("cover")
