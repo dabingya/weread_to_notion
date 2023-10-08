@@ -65,7 +65,8 @@ def get_bookinfo(bookId):
         data = r.json()
         isbn = data["isbn"]
         newRating = data["newRating"]/1000
-    return (isbn, newRating)
+        category = data['category']
+    return (isbn, newRating,category)
 
 
 def get_review_list(bookId):
@@ -195,7 +196,7 @@ def get_chapter_info(bookId):
     return None
 
 
-def insert_to_notion(bookName, bookId, cover, sort, author,isbn,rating):
+def insert_to_notion(bookName, bookId, cover, sort, author,isbn,rating,category):
     """插入到notion"""
     time.sleep(0.3)
     parent = {
@@ -206,6 +207,7 @@ def insert_to_notion(bookName, bookId, cover, sort, author,isbn,rating):
         "BookName": {"title": [{"type": "text", "text": {"content": bookName}}]},
         "BookId": {"rich_text": [{"type": "text", "text": {"content": bookId}}]},
         "ISBN": {"rich_text": [{"type": "text", "text": {"content": isbn}}]},
+        "CATEGORY": {"rich_text": [{"type": "text", "text": {"content": category}}]},
         "URL": {"url": f"https://weread.qq.com/web/reader/{calculate_book_str_id(bookId)}"},
         "Author": {"rich_text": [{"type": "text", "text": {"content": author}}]},
         "Sort": {"number": sort},
@@ -419,10 +421,10 @@ if __name__ == "__main__":
             bookmark_list.extend(reviews)
             bookmark_list = sorted(bookmark_list, key=lambda x: (
                 x.get("chapterUid", 1), 0 if (x.get("range", "") == "" or x.get("range").split("-")[0]=="" ) else int(x.get("range").split("-")[0])))
-            isbn,rating = get_bookinfo(bookId)
+            isbn,rating,category = get_bookinfo(bookId)
             children, grandchild = get_children(
                 chapter, summary, bookmark_list)
-            id = insert_to_notion(title, bookId, cover, sort, author,isbn,rating)
+            id = insert_to_notion(title, bookId, cover, sort, author,isbn,rating,category)
             results = add_children(id, children)
             if(len(grandchild)>0 and results!=None):
                 add_grandchild(grandchild, results)
