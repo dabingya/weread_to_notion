@@ -205,7 +205,7 @@ def get_chapter_info(bookId):
     return None
 
 
-def insert_to_notion(bookName, bookId, cover, sort, author,isbn,rating,category,progress):
+def insert_to_notion(bookName, bookId, cover, sort, author,isbn,rating,category,progress, totalWords):
     """插入到notion"""
     time.sleep(0.3)
     parent = {
