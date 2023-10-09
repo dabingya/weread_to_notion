@@ -440,6 +440,7 @@ if __name__ == "__main__":
             check(bookId)
             chapter = get_chapter_info(bookId)
             bookmark_list = get_bookmark_list(bookId)
+            print(bookId, title, author)
             summary, reviews = get_review_list(bookId)
             bookmark_list.extend(reviews)
             bookmark_list = sorted(bookmark_list, key=lambda x: (
