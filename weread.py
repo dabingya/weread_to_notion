@@ -39,6 +39,7 @@ def get_bookmark_list(bookId):
     """获取我的划线"""
     params = dict(bookId=bookId)
     r = session.get(WEREAD_BOOKMARKLIST_URL, params=params)
+    print(bookId, r.ok)
     if r.ok:
         updated = r.json().get("updated")
         updated = sorted(updated, key=lambda x: (
