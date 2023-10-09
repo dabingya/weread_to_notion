@@ -68,7 +68,11 @@ def get_bookinfo(bookId):
         category = ""
         if data.get('category'):
             category = data['category']
-    return (isbn, newRating, category)
+
+        totalWords = 0
+        if data.get('totalWords'):
+            totalWords = data['totalWords']
+    return (isbn, newRating, category, totalWords)
 
 
 def get_review_list(bookId):
@@ -213,7 +217,8 @@ def insert_to_notion(bookName, bookId, cover, sort, author,isbn,rating,category,
         "PROGRESS": {"number": progress}, 
         "BookId": {"rich_text": [{"type": "text", "text": {"content": bookId}}]},
         "ISBN": {"rich_text": [{"type": "text", "text": {"content": isbn}}]},
-        "CATEGORY": {"rich_text": [{"type": "text", "text": {"content": category}}]},
+        "CATEGORY": {"rich_text": [{"type": "text", "text": {"content": category}}]}, 
+        "Words": {"number": totalWords }, 
         "URL": {"url": f"https://weread.qq.com/web/reader/{calculate_book_str_id(bookId)}"},
         "Author": {"rich_text": [{"type": "text", "text": {"content": author}}]},
         "Sort": {"number": sort},
@@ -428,10 +433,10 @@ if __name__ == "__main__":
             bookmark_list.extend(reviews)
             bookmark_list = sorted(bookmark_list, key=lambda x: (
                 x.get("chapterUid", 1), 0 if (x.get("range", "") == "" or x.get("range").split("-")[0]=="" ) else int(x.get("range").split("-")[0])))
-            isbn,rating,category = get_bookinfo(bookId)
+            isbn,rating,category,totalWords = get_bookinfo(bookId)
             children, grandchild = get_children(
                 chapter, summary, bookmark_list)
-            id = insert_to_notion(title, bookId, cover, sort, author,isbn,rating,category, progress)
+            id = insert_to_notion(title, bookId, cover, sort, author,isbn,rating,category, progress,totalWords)
             results = add_children(id, children)
             if(len(grandchild)>0 and results!=None):
                 add_grandchild(grandchild, results)
