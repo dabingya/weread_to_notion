@@ -233,7 +233,8 @@ def insert_to_notion(bookName, bookId, cover, sort, author,isbn,rating,category,
         # 阅读速度 字/分
         if readingTime != 0:
             print(bookName, totalWords, readingTime)
-            properties["SPEED"]= {"rich_text": [{"type": "text", "text": {"content": str(totalWords//(readingTime//60)) +'字/分' }}]}
+            if readingTime//60 != 0:
+                properties["SPEED"]= {"rich_text": [{"type": "text", "text": {"content": str(totalWords//(readingTime//60)) +'字/分' }}]}
         
         format_time = ""
         hour = readingTime // 3600
